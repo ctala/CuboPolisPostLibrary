@@ -18,14 +18,50 @@ class Trx {
     public $total;
     public $tipoTRX;
     public $fecha;
+    public $synced = "NO";
 
     function __construct($nPedido, $subTotal, $descuentos, $total, $tipoTRX, $fecha) {
         $this->nPedido = $nPedido;
         $this->subTotal = $subTotal;
         $this->descuentos = $descuentos;
         $this->total = $total;
-        $this->tipoTRX = $tipoTRX;
+        $this->setTipoTRX($tipoTRX);
         $this->fecha = $fecha;
+    }
+
+    function setTipoTRX($tipoTRX) {
+        $resultado;
+
+        switch ($tipoTRX) {
+            case "webpay":
+                $resultado = "WEBPAYPLUS";
+                break;
+            case "webpayplusws":
+                $resultado = "WEBPAYPLUSWS";
+                break;
+            case "webpayplus":
+                $resultado = "WEBPAYPLUS";
+                break;
+            case "khipu":
+                $resultado = "KHIPU";
+                break;
+            case "khipubacs":
+                $resultado = "KHIPU";
+                break;
+            case "bacs":
+                $resultado = "KHIPU";
+                break;
+            case "mercado_pagos_chile":
+                $resultado = "MERCADOPAGO";
+                break;
+            case "WooPagosMP":
+                $resultado = "MERCADOPAGO";
+                break;
+            default:
+                $resultado = "OTRO";
+                break;
+        }
+        $this->tipoTRX = $resultado;
     }
 
     function set_CUBOPOLISAPIURL($_CUBOPOLISAPIURL) {
@@ -48,10 +84,10 @@ class Trx {
             "total" => intval($this->total),
             "tipoTRX" => $this->tipoTRX,
             "fecha" => $this->fecha,
-            
+            "synced" => $this->synced,
         );
 
-        $postUrl = $this->_CUBOPOLISAPIURL . "create" . "?access-token=" . $this->_access_token."&resource-token=".$this->_resource_token;
+        $postUrl = $this->_CUBOPOLISAPIURL . "create" . "?access-token=" . $this->_access_token . "&resource-token=" . $this->_resource_token;
 
         $fieldsString = "";
         foreach ($fields as $key => $value) {
@@ -67,7 +103,6 @@ class Trx {
         curl_close($ch);
         echo '\n ';
         echo '\n ';
-        
     }
 
 }
