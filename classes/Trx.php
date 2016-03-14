@@ -18,7 +18,7 @@ class Trx {
     public $total;
     public $tipoTRX;
     public $fecha;
-    public $synced = "NO";
+    public $synced = "NC";
 
     function __construct($nPedido, $subTotal, $descuentos, $total, $tipoTRX, $fecha) {
         $this->nPedido = $nPedido;
@@ -31,8 +31,8 @@ class Trx {
 
     function setTipoTRX($tipoTRX) {
         $resultado;
-
-        switch ($tipoTRX) {
+        echo $tipoTRX;
+        switch (strtolower($tipoTRX)) {
             case "webpay":
                 $resultado = "WEBPAYPLUS";
                 break;
@@ -49,18 +49,22 @@ class Trx {
                 $resultado = "KHIPU";
                 break;
             case "bacs":
-                $resultado = "KHIPU";
+                $resultado = "BANCO";
                 break;
             case "mercado_pagos_chile":
                 $resultado = "MERCADOPAGO";
                 break;
-            case "WooPagosMP":
+            case "woopagosmp":
                 $resultado = "MERCADOPAGO";
+                break;
+            case "cheque":
+                $resultado = "CHEQUE";
                 break;
             default:
                 $resultado = "OTRO";
                 break;
         }
+        echo $resultado;
         $this->tipoTRX = $resultado;
     }
 
